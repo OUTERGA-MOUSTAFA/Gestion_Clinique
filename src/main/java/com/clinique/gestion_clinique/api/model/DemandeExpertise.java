@@ -73,6 +73,19 @@ public class DemandeExpertise {
         this.specialiste = specialiste;
     }
 
+    public Long getSpecialisteId() {
+        return specialiste == null ? null : specialiste.getId();
+    }
+
+    public void setSpecialisteId(Long specialisteId) {
+        if (specialisteId == null) {
+            specialiste = null;
+        } else {
+            specialiste = new Specialiste();
+            specialiste.setId(specialisteId);
+        }
+    }
+
     public String getQuestion() {
         return question;
     }
@@ -118,6 +131,14 @@ public class DemandeExpertise {
     }
 
     public void setDateCreation(LocalDateTime dateCreation) {
+        this.dateCreation = dateCreation;
+    }
+
+    public LocalDateTime getDate_de_creation() {
+        return dateCreation;
+    }
+
+    public void setDate_de_creation(LocalDateTime dateCreation) {
         this.dateCreation = dateCreation;
     }
 }
