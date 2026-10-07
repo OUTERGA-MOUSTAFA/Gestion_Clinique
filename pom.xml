@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Fichier de configuration Maven.
+
+    Maven est responsable de :
+    - télécharger les dépendances
+    - compiler le projet
+    - générer le fichier WAR
+    - gérer les versions des bibliothèques
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="
+            http://maven.apache.org/POM/4.0.0
+            https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <!-- Version du modèle Maven -->
+    <modelVersion>4.0.0</modelVersion>
+
+
+    <!--
+        Identification du projet
+    -->
+
+    <groupId>com.clinique</groupId>
+
+    <artifactId>gestion-clinique</artifactId>
+
+    <version>1.0-SNAPSHOT</version>
+
+
+    <!--
+        WAR = Web Application Archive.
+
+        Notre application sera déployée sur un serveur
+        comme Apache Tomcat.
+    -->
+    <packaging>war</packaging>
+
+
+    <!--
+        Configuration générale du projet
+    -->
+
+    <properties>
+
+        <!-- Version Java utilisée pour compiler le projet -->
+        <maven.compiler.source>17</maven.compiler.source>
+
+        <maven.compiler.target>17</maven.compiler.target>
+
+        <!-- Encodage des fichiers -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    </properties>
+
+
+    <!-- ====================================================== -->
+    <!--                    DEPENDENCIES                         -->
+    <!-- ====================================================== -->
+
+    <dependencies>
+
+
+        <!-- ================================================== -->
+        <!-- JAKARTA REST / JAX-RS                              -->
+        <!-- ================================================== -->
+
+        <!--
+            API Jakarta REST.
+
+            Elle fournit les annotations comme :
+
+            @Path
+            @GET
+            @POST
+            @PUT
+            @DELETE
+            @Produces
+            @Consumes
+        -->
+
+        <dependency>
+
+            <groupId>jakarta.ws.rs</groupId>
+
+            <artifactId>jakarta.ws.rs-api</artifactId>
+
+            <version>3.1.0</version>
+
+            <!--
+                Tomcat / serveur fournit cette API.
+                On ne l'embarque donc pas dans le WAR.
+            -->
+            <scope>provided</scope>
+
+        </dependency>
+
+
+        <!-- ================================================== -->
+        <!-- JERSEY                                              -->
+        <!-- ================================================== -->
+
+        <!--
+            Jersey est l'implémentation de Jakarta REST.
+
+            JAX-RS = les spécifications
+            Jersey = l'implémentation utilisée pour les exécuter.
+        -->
+
+        <dependency>
+
+            <groupId>org.glassfish.jersey.containers</groupId>
+
+            <artifactId>jersey-container-servlet-core</artifactId>
+
+            <version>3.1.10</version>
+
+        </dependency>
+
+
+        <!--
+            HK2 permet à Jersey de gérer l'injection
+            et la création des composants.
+        -->
+
+        <dependency>
+
+            <groupId>org.glassfish.jersey.inject</groupId>
+
+            <artifactId>jersey-hk2</artifactId>
+
+            <version>3.1.10</version>
+
+        </dependency>
+
+
+        <!-- ================================================== -->
+        <!-- SERVLET                                             -->
+        <!-- ================================================== -->
+
+        <!--
+            Jakarta Servlet API.
+
+            Jersey fonctionne au-dessus du système Servlet
+            du serveur Tomcat.
+        -->
+
+        <dependency>
+
+            <groupId>jakarta.servlet</groupId>
+
+            <artifactId>jakarta.servlet-api</artifactId>
+
+            <version>6.0.0</version>
+
+            <scope>provided</scope>
+
+        </dependency>
+
+
+        <!-- ================================================== -->
+        <!-- JPA                                                  -->
+        <!-- ================================================== -->
+
+        <!--
+            JPA = Jakarta Persistence API.
+
+            Elle permet de travailler avec les tables SQL
+            en utilisant des objets Java.
+        -->
+
+        <dependency>
+
+            <groupId>jakarta.persistence</groupId>
+
+            <artifactId>jakarta.persistence-api</artifactId>
+
+            <version>3.1.0</version>
+
+        </dependency>
+
+
+        <!-- ================================================== -->
+        <!-- HIBERNATE                                            -->
+        <!-- ================================================== -->
+
+        <!--
+            Hibernate est l'implémentation JPA utilisée
+            pour communiquer avec la base de données.
+        -->
+
+        <dependency>
+
+            <groupId>org.hibernate.orm</groupId>
+
+            <artifactId>hibernate-core</artifactId>
+
+            <version>6.4.4.Final</version>
+
+        </dependency>
+
+
+        <!-- ================================================== -->
+        <!-- MYSQL                                                -->
+        <!-- ================================================== -->
+
+        <!--
+            Driver JDBC permettant à Java de communiquer
+            avec MySQL.
+        -->
+
+        <dependency>
+
+            <groupId>com.mysql</groupId>
+
+            <artifactId>mysql-connector-j</artifactId>
+
+            <version>8.4.0</version>
+
+        </dependency>
+
+
+        <!-- ================================================== -->
+        <!-- BCRYPT                                               -->
+        <!-- ================================================== -->
+
+        <!--
+            BCrypt permet de vérifier les mots de passe
+            de manière sécurisée.
+
+            Exemple :
+
+            mot de passe envoyé
+                    ↓
+                BCrypt
+                    ↓
+            comparaison avec le hash
+            enregistré dans la DB
+        -->
+
+        <dependency>
+
+            <groupId>org.mindrot</groupId>
+
+            <artifactId>jbcrypt</artifactId>
+
+            <version>0.4</version>
+
+        </dependency>
+
+
+        <!-- ================================================== -->
+        <!-- JSON                                                 -->
+        <!-- ================================================== -->
+
+        <!--
+            Jersey utilise Jackson pour convertir :
+
+            Objet Java → JSON
+            JSON → Objet Java
+        -->
+
+        <dependency>
+
+            <groupId>org.glassfish.jersey.media</groupId>
+
+            <artifactId>jersey-media-json-jackson</artifactId>
+
+            <version>3.1.10</version>
+
+        </dependency>
+
+
+    </dependencies>
+
+
+    <!-- ====================================================== -->
+    <!--                       BUILD                              -->
+    <!-- ====================================================== -->
+
+    <build>
+
+        <!--
+            Nom du fichier WAR généré.
+
+            Après mvn package :
+
+            target/gestion-clinique.war
+        -->
+
+        <finalName>gestion-clinique</finalName>
+
+
+        <plugins>
+
+
+            <!-- ============================================== -->
+            <!-- COMPILATEUR JAVA                                -->
+            <!-- ============================================== -->
+
+            <plugin>
+
+                <groupId>org.apache.maven.plugins</groupId>
+
+                <artifactId>maven-compiler-plugin</artifactId>
+
+                <version>3.13.0</version>
+
+                <configuration>
+
+                    <!-- Java 17 -->
+                    <source>17</source>
+
+                    <target>17</target>
+
+                </configuration>
+
+            </plugin>
+
+
+            <!-- ============================================== -->
+            <!-- WAR PLUGIN                                      -->
+            <!-- ============================================== -->
+
+            <plugin>
+
+                <groupId>org.apache.maven.plugins</groupId>
+
+                <artifactId>maven-war-plugin</artifactId>
+
+                <version>3.4.0</version>
+
+            </plugin>
+
+
+        </plugins>
+
+    </build>
+
+</project>
