@@ -41,7 +41,7 @@ Le projet respecte une séparation stricte des responsabilités :
 - **IDE :** Visual Studio Code
 
 ## 📂 Structure du Projet
-```text
+```
 gestion-clinique/
 ├── src/
 │   ├── main/
@@ -62,3 +62,14 @@ gestion-clinique/
 │   │       ├── generaliste/      # JSP Généraliste
 │   │       └── login.jsp
 └── pom.xml
+```
+
+## Comptes de test
+- Généraliste : `generaliste@clinique.ma` / `password123`
+- Spécialiste cardio : `cardio@clinique.ma` / `password123`
+- Spécialiste pneumo : `pneumo@clinique.ma` / `password123`
+
+## Authentification
+L'API utilise HTTP Basic : envoyez l'en-tête `Authorization: Basic <identifiants encodés en Base64>`, où les identifiants sont au format `email:mot_de_passe`. Les mots de passe sont vérifiés avec BCrypt.
+
+Une requête sans identifiants valides reçoit `401 Unauthorized` et l'en-tête `WWW-Authenticate`. Un utilisateur authentifié qui ne possède pas le rôle autorisé reçoit `403 Forbidden`.
