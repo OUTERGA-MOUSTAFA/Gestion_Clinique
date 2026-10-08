@@ -38,7 +38,7 @@ public class DemandeExpertise {
         this.consultationId = consultationId;
     }
 
-    public long getSpecialisteId() {
+    public long getSpecialiteId() {
         return specialisteId;
     }
 

@@ -1,12 +1,13 @@
+
 package com.clinique.gestion_clinique.api.resource.dto;
+//Un DTO[ Data Transfer Object ] sert à représenter les données que le client envoie à ton API, sans envoyer directement ton Entity JPA.
 
 import com.clinique.gestion_clinique.api.model.Priorite;
 
-
 //DTO pour le POST 
 public class DemandeExpertiseRequest {
-    
-     private Long consultationId;
+
+    private Long consultationId;
 
     private Long specialisteId;
 
@@ -14,7 +15,8 @@ public class DemandeExpertiseRequest {
 
     private Priorite priorite;
 
-    public DemandeExpertiseRequest(){}
+    public DemandeExpertiseRequest() {
+    }
 
     public Long getConsultationId() {
         return consultationId;
@@ -47,7 +49,5 @@ public class DemandeExpertiseRequest {
     public void setPriorite(Priorite priorite) {
         this.priorite = priorite;
     }
-
-    
 
 }

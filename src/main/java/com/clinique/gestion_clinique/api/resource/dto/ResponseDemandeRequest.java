@@ -1,12 +1,12 @@
 package com.clinique.gestion_clinique.api.resource.dto;
 
-public class ReponseDemandeRequest {
+public class ResponseDemandeRequest {
     private String avis ;
 
     private String recommandations;
 
 
-    public ReponseDemandeRequest(){}
+    public ResponseDemandeRequest(){}
 
      public String getAvis() {
         return avis;
