@@ -61,3 +61,12 @@ gestion-clinique/
 │   │       ├── generaliste/      # JSP Généraliste
 │   │       └── login.jsp
 └── pom.xml
+```
+
+## US4 - Répondre à une demande
+L'endpoint prévu est `PUT /api/demandes/{id}/reponse`, pour un utilisateur authentifié avec le rôle `SPECIALISTE`. Il reste à intégrer après l'alignement des entités `DemandeExpertise` et `Specialiste` avec ce projet.
+
+- `200 OK` : réponse enregistrée.
+- `401 Unauthorized` : identifiants Basic absents ou invalides.
+- `403 Forbidden` : rôle différent de `SPECIALISTE` ou demande appartenant à un autre spécialiste.
+- `404 Not Found` : demande introuvable.
