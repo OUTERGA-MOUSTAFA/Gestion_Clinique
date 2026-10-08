@@ -48,8 +48,12 @@
         <class>
             com.clinique.gestion_clinique.api.model.Utilisateur
         </class>
-
-
+        <class>
+            com.com.clinique.gestion_clinique.api.model.DemandeExpertise
+        </class>
+        <class>
+            com.com.clinique.gestion_clinique.api.model.Specialiste
+        </class>
         <!--
             Configuration de connexion MySQL.
         -->
