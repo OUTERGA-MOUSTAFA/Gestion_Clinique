@@ -2,7 +2,6 @@ package com.clinique.gestion_clinique.api.repository;
 
 import java.util.Optional;
 
-import com.clinique.gestion_clinique.api.config.JpaUtil;
 import com.clinique.gestion_clinique.api.model.Specialiste;
 
 import jakarta.persistence.EntityManager;
@@ -46,5 +45,14 @@ public class SpecialisteRepository {
 
             return null;
         }
+    }
+
+    public Optional<Specialiste> findByUtilisateurId(Long utilisateurId) {
+        return entityManager.createQuery(
+                "SELECT s FROM Specialiste s WHERE s.utilisateurId = :uid",
+                Specialiste.class)
+                .setParameter("uid", utilisateurId)
+                .getResultStream()
+                .findFirst();
     }
 }
