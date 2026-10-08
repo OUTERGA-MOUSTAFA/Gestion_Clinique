@@ -38,11 +38,13 @@ public class DemandeExpertiseResource {
 
         try{
 
-            DemandeExpertise demande = service.creerDemance(request);
+            DemandeExpertise demande = demandeService.creationDemandeExpertise(request);
             return Response
-                    .status(Response.Status.BAD_REQUEST)
-                    .entity(e.getMessage())
+                    .status(Response.Status.CREATED)
+                    .entity(demande)
                     .build();
+        }catch(IllegalArgumentException exception){
+            return Response.status(Response.Status.BAD_REQUEST).entity(exception).build();
         }
 
     }
