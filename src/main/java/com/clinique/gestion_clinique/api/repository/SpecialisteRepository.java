@@ -11,8 +11,23 @@ public class SpecialisteRepository {
 
     private final EntityManager entityManager;
 
+    public SpecialisteRepository() {
+        this.entityManager = null;
+    }
+
     public SpecialisteRepository(EntityManager entityManager) {
         this.entityManager = entityManager;
+    }
+
+    public Optional<Specialiste> findById(Long id) {
+        EntityManager manager = entityManager == null ? JpaUtil.createEntityManager() : entityManager;
+        try {
+            return Optional.ofNullable(manager.find(Specialiste.class, id));
+        } finally {
+            if (entityManager == null) {
+                manager.close();
+            }
+        }
     }
 
     public Specialiste findUtilisateurById(Long utilisateurId) {

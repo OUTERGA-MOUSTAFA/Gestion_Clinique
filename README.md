@@ -1,5 +1,6 @@
 # 🏥 Système de Télé-expertise Médicale : Application Clinique
 
+
 ## 📝 Description
 Ce projet est une application web Java EE développée dans le cadre du **Sprint 2 - Brief 1**. Elle permet la gestion de l'accueil des patients par un infirmier et leur consultation par un médecin généraliste.
 
@@ -40,7 +41,7 @@ Le projet respecte une séparation stricte des responsabilités :
 - **IDE :** Visual Studio Code
 
 ## 📂 Structure du Projet
-```text
+```
 gestion-clinique/
 ├── src/
 │   ├── main/

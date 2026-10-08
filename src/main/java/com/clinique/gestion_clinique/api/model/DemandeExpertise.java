@@ -2,12 +2,15 @@ package com.clinique.gestion_clinique.api.model;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,34 +19,58 @@ public class DemandeExpertise {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long consultationId;
-    private long specialisteId;
+    private Long id;
+
+    @Column(name = "consultation_id", nullable = false)
+    private Long consultationId;
+
+    @ManyToOne
+    @JoinColumn(name = "specialiste_id", nullable = false)
+    private Specialiste specialiste;
+
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String question;
+
     @Enumerated(EnumType.STRING)
     private Priorite priorite;
+
     @Enumerated(EnumType.STRING)
     private StatutDemande statut;
+
+    @Column(columnDefinition = "TEXT")
     private String avis;
+
+    @Column(columnDefinition = "TEXT")
     private String recommandations;
-    private LocalDateTime date_de_creation;
+
+    @Column(name = "date_creation")
+    private LocalDateTime dateCreation;
 
     public DemandeExpertise() {
     }
 
-    public long getConsultationId() {
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getConsultationId() {
         return consultationId;
     }
 
-    public void setConsultationId(long consultationId) {
+    public void setConsultationId(Long consultationId) {
         this.consultationId = consultationId;
     }
 
-    public long getSpecialisteId() {
-        return specialisteId;
+    public Specialiste getSpecialiste() {
+        return specialiste;
     }
 
-    public void setSpecialisteId(long specialisteId) {
-        this.specialisteId = specialisteId;
+    public void setSpecialiste(Specialiste specialiste) {
+        this.specialiste = specialiste;
     }
 
     public String getQuestion() {
@@ -86,12 +113,11 @@ public class DemandeExpertise {
         this.recommandations = recommandations;
     }
 
-    public LocalDateTime getDate_de_creation() {
-        return date_de_creation;
+    public LocalDateTime getDateCreation() {
+        return dateCreation;
     }
 
-    public void setDate_de_creation(LocalDateTime date_de_creation) {
-        this.date_de_creation = date_de_creation;
+    public void setDateCreation(LocalDateTime dateCreation) {
+        this.dateCreation = dateCreation;
     }
-
 }
