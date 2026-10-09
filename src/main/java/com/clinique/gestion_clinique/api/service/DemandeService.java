@@ -1,6 +1,7 @@
 package com.clinique.gestion_clinique.api.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.clinique.gestion_clinique.api.model.DemandeExpertise;
 import com.clinique.gestion_clinique.api.model.Specialite;
@@ -144,5 +145,18 @@ public class DemandeService {
                 LocalDateTime.now());
 
         return demandeRepository.save(demande);
+    }
+
+    public List<DemandeExpertise> getDemandes(StatutDemande statut, Long consultationId){
+
+        if (statut != null) {
+            return demandeRepository.findByStatut(statut);
+        }
+
+        if (consultationId != null) {
+            return demandeRepository.findByConsultation(consultationId);
+        }
+
+        return demandeRepository.findAll();
     }
 }

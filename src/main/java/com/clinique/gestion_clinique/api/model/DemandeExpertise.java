@@ -8,6 +8,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -16,8 +18,14 @@ public class DemandeExpertise {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long consultationId;
-    private long specialisteId;
+    private Long id;
+    
+    @ManyToOne
+    @JoinColumn(name = "consultation_id")
+    private Long consultationId;
+    @ManyToOne
+    @JoinColumn(name = "specialiste_id")
+    private Long specialisteId;
     private String question;
     @Enumerated(EnumType.STRING)
     private Priorite priorite;
@@ -30,19 +38,19 @@ public class DemandeExpertise {
     public DemandeExpertise() {
     }
 
-    public long getConsultationId() {
+    public Long getConsultationId() {
         return consultationId;
     }
 
-    public void setConsultationId(long consultationId) {
+    public void setConsultationId(Long consultationId) {
         this.consultationId = consultationId;
     }
 
-    public long getSpecialiteId() {
+    public Long getSpecialiteId() {
         return specialisteId;
     }
 
-    public void setSpecialisteId(long specialisteId) {
+    public void setSpecialisteId(Long specialisteId) {
         this.specialisteId = specialisteId;
     }
 

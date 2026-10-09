@@ -276,24 +276,16 @@
     <!-- ====================================================== -->
 
     <build>
-
         <!--
             Nom du fichier WAR généré.
-
-            Après mvn package :
-
-            target/gestion-clinique.war
+            Après mvn package :target/gestion-clinique.war
         -->
 
         <finalName>gestion-clinique</finalName>
 
 
         <plugins>
-
-
-            <!-- ============================================== -->
-            <!-- COMPILATEUR JAVA                                -->
-            <!-- ============================================== -->
+            <!-- COMPILATEUR JAVA -->
 
             <plugin>
 
@@ -313,22 +305,12 @@
                 </configuration>
 
             </plugin>
-
-
-            <!-- ============================================== -->
-            <!-- WAR PLUGIN                                      -->
-            <!-- ============================================== -->
-
+            <!-- WAR PLUGIN -->
             <plugin>
-
                 <groupId>org.apache.maven.plugins</groupId>
-
                 <artifactId>maven-war-plugin</artifactId>
-
                 <version>3.4.0</version>
-
             </plugin>
-
 
         </plugins>
 

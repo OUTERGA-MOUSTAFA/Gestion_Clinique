@@ -45,15 +45,11 @@
             les tables de la base de données.
         -->
 
-        <class>
-            com.clinique.gestion_clinique.api.model.Utilisateur
-        </class>
-        <class>
-            com.com.clinique.gestion_clinique.api.model.DemandeExpertise
-        </class>
-        <class>
-            com.com.clinique.gestion_clinique.api.model.Specialiste
-        </class>
+        <class>com.clinique.gestion_clinique.api.model.Utilisateur</class>
+
+        <class>com.clinique.gestion_clinique.api.model.DemandeExpertise</class>
+
+        <class>com.clinique.gestion_clinique.api.model.Specialite</class>
         <!--
             Configuration de connexion MySQL.
         -->
