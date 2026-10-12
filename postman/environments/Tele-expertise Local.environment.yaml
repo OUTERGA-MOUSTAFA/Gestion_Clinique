@@ -1,0 +1,16 @@
+name: Tele-expertise Local
+values:
+  - key: baseUrl
+    value: ''
+  - key: generalisteEmail
+    value: ''
+  - key: generalistePassword
+    value: ''
+  - key: cardiologueEmail
+    value: ''
+  - key: cardiologuePassword
+    value: ''
+  - key: pneumologueEmail
+    value: ''
+  - key: pneumologuePassword
+    value: ''

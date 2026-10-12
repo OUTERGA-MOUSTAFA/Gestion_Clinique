@@ -1,63 +1,101 @@
-# 🏥 Système de Télé-expertise Médicale : Application Clinique
+# Service de télé-expertise médicale (Brief 2)
 
-## 📝 Description
-Ce projet est une application web Java EE développée dans le cadre du **Sprint 2 - Brief 1**. Elle permet la gestion de l'accueil des patients par un infirmier et leur consultation par un médecin généraliste.
+API REST Jakarta EE (JAX-RS / Jersey) permettant à un généraliste de demander l'avis d'un spécialiste. L'API est **stateless** : chaque requête s'authentifie avec **HTTP Basic** (email + mot de passe dans l'en-tête `Authorization`).
 
-L'application est construite selon une **architecture en couches stricte** (Controller, Service, DAO, Entity) afin de faciliter la migration future vers un service de télé-expertise et de garantir la maintenabilité du code.
+Les appels se font avec **Thunder Client** (VS Code), pas Postman.
 
-## ✨ Fonctionnalités (User Stories)
-- **Authentification :** Login/Logout sécurisé, gestion des rôles (Infirmier, Généraliste), protection CSRF, mots de passe hachés en BCrypt.
-- **Module Infirmier (US1 & US2) :**
-  - Enregistrement des patients avec identité et signes vitaux (TA, FC, Température, FR).
-  - Enregistrement automatique de l'heure d'arrivée.
-  - Affichage de la liste des patients du jour triée par heure d'arrivée (utilisation de la Stream API).
-- **Module Médecin Généraliste (US3) :**
-  - Consultation de la liste des patients en attente.
-  - Saisie d'un formulaire unique (motif, observations, diagnostic, traitement).
-  - Clôture de la consultation avec un coût fixe de 150 DH et un statut TERMINEE.
-- **Bonus :**
-  - Recherche de patient par NSS pour mise à jour des signes vitaux.
-  - Ajout d'actes techniques (radiographie, échographie, etc.) avec calcul du coût total via `map().sum()`.
+## Stack
 
-## 🏗️ Architecture Technique
-Le projet respecte une séparation stricte des responsabilités :
-- **Controller :** Servlets Jakarta EE.
-- **Service :** Logique métier et validation.
-- **DAO (Repository) :** Accès aux données via des interfaces (`PatientDAO`, `UtilisateurDAO`, `ConsultationDAO`).
-- **Entity :** Modèle de données (`Utilisateur`, `Patient`, `Consultation`).
+- Java 17, Maven, Tomcat 10+
+- JAX-RS (Jersey), Jackson
+- JPA / Hibernate, MySQL
+- BCrypt (`jBCrypt`)
+- Architecture : resource → service → repository
 
-**Note sur les livrables :**
-- **Livrable 1 :** Implémentation JDBC des DAO (`JdbcUserDAO`, `JdbcPatientDAO`, `JdbcConsultationDAO`).
-- **Livrable 2 :** Migration vers JPA/Hibernate (`JpaUserDAO`, `JpaPatientDAO`, `JpaConsultationDAO`).
+## Prérequis
 
-## 🛠️ Stack Technique
-- **Langage :** Java 17+
-- **Build :** Maven
-- **Web :** Jakarta EE (Servlet, JSP, JSTL), Apache Tomcat 10+
-- **Base de données :** MySQL ou PostgreSQL
-- **ORM :** Hibernate / JPA
-- **Sécurité :** BCrypt (jBCrypt), Filtres HTTP (Session, CSRF)
-- **IDE :** Visual Studio Code
+1. MySQL avec une base `gestion_clinique` (la même que le brief 1).
+2. Adapter l'utilisateur / mot de passe JDBC dans `src/main/resources/META-INF/persistence.xml` si besoin.
+3. Démarrer Tomcat 10, puis déployer le WAR.
 
-## 📂 Structure du Projet
-```text
-gestion-clinique/
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   └── com/clinique/
-│   │   │       ├── entity/       # Entités JPA
-│   │   │       ├── repository/   # Interfaces DAO et implémentations (JDBC/JPA)
-│   │   │       ├── service/      # Logique métier
-│   │   │       ├── servlet/      # Contrôleurs
-│   │   │       └── filter/       # Filtres (Auth, CSRF)
-│   │   ├── resources/
-│   │   │   └── META-INF/
-│   │   │       └── persistence.xml # Config JPA (Livrable 2)
-│   │   └── webapp/
-│   │       ├── WEB-INF/
-│   │       │   └── web.xml
-│   │       ├── infirmier/        # JSP Infirmier
-│   │       ├── generaliste/      # JSP Généraliste
-│   │       └── login.jsp
-└── pom.xml
+```bash
+./mvnw package
+```
+
+Le WAR généré est `target/gestion-clinique.war`. URL de base :
+
+`http://localhost:8080/gestion-clinique/api`
+
+4. Exécuter le script des comptes de test **après** un premier démarrage (Hibernate crée / met à jour les tables) :
+
+`src/main/resources/sql/seed-specialistes.sql`
+
+Si la table `consultation` du brief 1 a des colonnes `NOT NULL` supplémentaires, insérez une consultation existante et utilisez son `id` à la place de `12`.
+
+## Comptes de test (mot de passe : `password123`)
+
+| Rôle         | Email                       | Usage                                      |
+|--------------|-----------------------------|--------------------------------------------|
+| GENERALISTE  | generaliste@clinique.com    | Lister les spécialistes, créer une demande |
+| SPECIALISTE  | cardiologue@clinique.com    | Recevoir / répondre (cardiologie, 300 DH)  |
+| SPECIALISTE  | pneumologue@clinique.com    | Deuxième spécialiste (pneumologie, 250 DH) |
+
+## Endpoints
+
+| Méthode | Endpoint | Rôle | Succès |
+|---------|----------|------|--------|
+| GET | `/api/ping` | public | 200 |
+| GET | `/api/me` | GENERALISTE, SPECIALISTE | 200 |
+| GET | `/api/specialistes?specialite=CARDIOLOGIE` | GENERALISTE | 200 |
+| POST | `/api/demandes` | GENERALISTE | 201 |
+| GET | `/api/demandes?statut=EN_ATTENTE` | SPECIALISTE | 200 |
+| GET | `/api/demandes?consultationId=12` | GENERALISTE | 200 |
+| PUT | `/api/demandes/{id}/reponse` | SPECIALISTE | 200 |
+
+Codes d'erreur : **400** (validation), **401** (identifiants absents / faux), **403** (rôle ou propriétaire), **404** (ressource absente).
+
+L'identité n'est **jamais** lue dans un paramètre de requête : un spécialiste ne voit et ne traite que ses propres demandes (`SecurityContext`).
+
+### POST `/api/demandes`
+
+```json
+{
+  "consultationId": 12,
+  "specialisteId": 1,
+  "question": "ECG anormal, suspicion de trouble du rythme. Votre avis ?",
+  "priorite": "URGENTE"
+}
+```
+
+Priorités : `URGENTE`, `NORMALE`, `NON_URGENTE`.  
+Spécialités : `CARDIOLOGIE`, `PNEUMOLOGIE`, `DERMATOLOGIE`, `NEUROLOGIE`, `ENDOCRINOLOGIE`.
+
+### PUT `/api/demandes/{id}/reponse`
+
+```json
+{
+  "avis": "Trouble du rythme probable.",
+  "recommandations": "Holter 24h, avis cardiologique rapproché."
+}
+```
+
+La demande passe au statut `TERMINEE`.
+
+## Thunder Client
+
+1. Installer l'extension **Thunder Client**.
+2. Import → fichiers :
+   - `thunder-tests/thunder-collection_TeleExpertise.json`
+   - `thunder-tests/thunder-environment_Local.json`
+3. Activer l'environnement **Tele-expertise Local**.
+4. Auth Basic : chaque requête utilise `{{generalisteEmail}}` / `{{cardiologueEmail}}` / `{{pneumologueEmail}}` et le mot de passe de l'environnement.
+
+Parcours de démo : ping → `/me` → liste CARDIOLOGIE → créer une demande → lister `EN_ATTENTE` (cardiologue) → répondre → revoir la demande avec `consultationId=12`. Vérifier aussi 401 sans identifiants, 403 avec le mauvais rôle, 400 / 404 sur les cas d'erreur.
+
+## User stories
+
+- **US0** : `BasicAuthFilter` (bcrypt) + `SecurityContext` + `@RolesAllowed`
+- **US1** : liste des spécialistes filtrée / triée par tarif (Stream API)
+- **US2** : création `EN_ATTENTE` avec validation 400 / 404
+- **US3** : listes filtrées par statut, tri `URGENTE` en premier, identité dans le `SecurityContext`
+- **US4** : réponse + 403 si la demande appartient à un autre spécialiste

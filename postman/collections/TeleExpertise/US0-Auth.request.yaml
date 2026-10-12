@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{baseUrl}}/api/me"
+method: GET
+auth:
+  type: basic
+  credentials:
+    username: "{{generalisteEmail}}"
+    password: "{{generalistePassword}}"
+order: 2000

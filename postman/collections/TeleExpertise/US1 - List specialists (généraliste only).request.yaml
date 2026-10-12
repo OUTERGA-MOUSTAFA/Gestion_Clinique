@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/specialistes?specialite=CARDIOLOGIE"
+method: GET
+queryParams:
+  - key: specialite
+    value: CARDIOLOGIE
+    disabled: false
+    description: ""
+auth:
+  type: basic
+  credentials:
+    username: "{{generalisteEmail}}"
+    password: "{{generalistePassword}}"
+order: 3000

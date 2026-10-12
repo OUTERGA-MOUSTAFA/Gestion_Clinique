@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{baseUrl}}/api/demandes/4/reponse"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: json
+  content: "{\r
+
+    \  \"avis\": \"Trouble du rythme probable.\",\r
+
+    \  \"recommandations\": \"Holter 24h, avis cardiologique rapproche.\"\r
+
+    }"
+auth:
+  type: basic
+  credentials:
+    username: cardiologue@clinique.com
+    password: password123
+order: 7000

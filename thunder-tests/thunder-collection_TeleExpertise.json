@@ -1,0 +1,436 @@
+{
+  "client": "Thunder Client",
+  "collectionName": "Tele-expertise API",
+  "collectionId": "col-tele-expertise-brief2",
+  "dateExported": "2026-10-09T11:00:00.000Z",
+  "version": "1.2",
+  "folders": [
+    {
+      "_id": "folder-us0",
+      "name": "US0 Auth",
+      "containerId": "",
+      "created": "2026-10-09T11:00:00.000Z",
+      "sortNum": 10000
+    },
+    {
+      "_id": "folder-us1",
+      "name": "US1 Specialistes",
+      "containerId": "",
+      "created": "2026-10-09T11:00:00.000Z",
+      "sortNum": 20000
+    },
+    {
+      "_id": "folder-us2",
+      "name": "US2 Creer demande",
+      "containerId": "",
+      "created": "2026-10-09T11:00:00.000Z",
+      "sortNum": 30000
+    },
+    {
+      "_id": "folder-us3",
+      "name": "US3 Consulter demandes",
+      "containerId": "",
+      "created": "2026-10-09T11:00:00.000Z",
+      "sortNum": 40000
+    },
+    {
+      "_id": "folder-us4",
+      "name": "US4 Repondre",
+      "containerId": "",
+      "created": "2026-10-09T11:00:00.000Z",
+      "sortNum": 50000
+    }
+  ],
+  "requests": [
+    {
+      "_id": "req-ping",
+      "colId": "col-tele-expertise-brief2",
+      "containerId": "",
+      "name": "GET /api/ping",
+      "url": "{{baseUrl}}/api/ping",
+      "method": "GET",
+      "sortNum": 1000,
+      "created": "2026-10-09T11:00:00.000Z",
+      "modified": "2026-10-09T11:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "tests": [
+        { "type": "res-code", "custom": "", "action": "equal", "value": "200" }
+      ]
+    },
+    {
+      "_id": "req-me-ok",
+      "colId": "col-tele-expertise-brief2",
+      "containerId": "folder-us0",
+      "name": "GET /api/me (generaliste)",
+      "url": "{{baseUrl}}/api/me",
+      "method": "GET",
+      "sortNum": 10000,
+      "created": "2026-10-09T11:00:00.000Z",
+      "modified": "2026-10-09T11:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "auth": {
+        "type": "basic",
+        "username": "{{generalisteEmail}}",
+        "password": "{{generalistePassword}}"
+      },
+      "tests": [
+        { "type": "res-code", "custom": "", "action": "equal", "value": "200" }
+      ]
+    },
+    {
+      "_id": "req-me-401-missing",
+      "colId": "col-tele-expertise-brief2",
+      "containerId": "folder-us0",
+      "name": "GET /api/me sans identifiants -> 401",
+      "url": "{{baseUrl}}/api/me",
+      "method": "GET",
+      "sortNum": 11000,
+      "created": "2026-10-09T11:00:00.000Z",
+      "modified": "2026-10-09T11:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "auth": { "type": "none" },
+      "tests": [
+        { "type": "res-code", "custom": "", "action": "equal", "value": "401" }
+      ]
+    },
+    {
+      "_id": "req-me-401-bad",
+      "colId": "col-tele-expertise-brief2",
+      "containerId": "folder-us0",
+      "name": "GET /api/me mot de passe faux -> 401",
+      "url": "{{baseUrl}}/api/me",
+      "method": "GET",
+      "sortNum": 12000,
+      "created": "2026-10-09T11:00:00.000Z",
+      "modified": "2026-10-09T11:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "auth": {
+        "type": "basic",
+        "username": "{{generalisteEmail}}",
+        "password": "wrong-password"
+      },
+      "tests": [
+        { "type": "res-code", "custom": "", "action": "equal", "value": "401" }
+      ]
+    },
+    {
+      "_id": "req-us1-ok",
+      "colId": "col-tele-expertise-brief2",
+      "containerId": "folder-us1",
+      "name": "GET /api/specialistes?specialite=CARDIOLOGIE",
+      "url": "{{baseUrl}}/api/specialistes?specialite=CARDIOLOGIE",
+      "method": "GET",
+      "sortNum": 20000,
+      "created": "2026-10-09T11:00:00.000Z",
+      "modified": "2026-10-09T11:00:00.000Z",
+      "headers": [],
+      "params": [
+        { "name": "specialite", "value": "CARDIOLOGIE", "isPath": false }
+      ],
+      "auth": {
+        "type": "basic",
+        "username": "{{generalisteEmail}}",
+        "password": "{{generalistePassword}}"
+      },
+      "tests": [
+        { "type": "res-code", "custom": "", "action": "equal", "value": "200" }
+      ]
+    },
+    {
+      "_id": "req-us1-400",
+      "colId": "col-tele-expertise-brief2",
+      "containerId": "folder-us1",
+      "name": "GET specialite inconnue -> 400",
+      "url": "{{baseUrl}}/api/specialistes?specialite=DENTAIRE",
+      "method": "GET",
+      "sortNum": 21000,
+      "created": "2026-10-09T11:00:00.000Z",
+      "modified": "2026-10-09T11:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "auth": {
+        "type": "basic",
+        "username": "{{generalisteEmail}}",
+        "password": "{{generalistePassword}}"
+      },
+      "tests": [
+        { "type": "res-code", "custom": "", "action": "equal", "value": "400" }
+      ]
+    },
+    {
+      "_id": "req-us1-403",
+      "colId": "col-tele-expertise-brief2",
+      "containerId": "folder-us1",
+      "name": "GET specialistes en tant que specialiste -> 403",
+      "url": "{{baseUrl}}/api/specialistes?specialite=CARDIOLOGIE",
+      "method": "GET",
+      "sortNum": 22000,
+      "created": "2026-10-09T11:00:00.000Z",
+      "modified": "2026-10-09T11:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "auth": {
+        "type": "basic",
+        "username": "{{cardiologueEmail}}",
+        "password": "{{specialistePassword}}"
+      },
+      "tests": [
+        { "type": "res-code", "custom": "", "action": "equal", "value": "403" }
+      ]
+    },
+    {
+      "_id": "req-us2-ok",
+      "colId": "col-tele-expertise-brief2",
+      "containerId": "folder-us2",
+      "name": "POST /api/demandes -> 201",
+      "url": "{{baseUrl}}/api/demandes",
+      "method": "POST",
+      "sortNum": 30000,
+      "created": "2026-10-09T11:00:00.000Z",
+      "modified": "2026-10-09T11:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"consultationId\": 12,\n  \"specialisteId\": 1,\n  \"question\": \"ECG anormal, suspicion de trouble du rythme. Votre avis ?\",\n  \"priorite\": \"URGENTE\"\n}",
+        "form": []
+      },
+      "auth": {
+        "type": "basic",
+        "username": "{{generalisteEmail}}",
+        "password": "{{generalistePassword}}"
+      },
+      "tests": [
+        { "type": "res-code", "custom": "", "action": "equal", "value": "201" }
+      ]
+    },
+    {
+      "_id": "req-us2-400-question",
+      "colId": "col-tele-expertise-brief2",
+      "containerId": "folder-us2",
+      "name": "POST question vide -> 400",
+      "url": "{{baseUrl}}/api/demandes",
+      "method": "POST",
+      "sortNum": 31000,
+      "created": "2026-10-09T11:00:00.000Z",
+      "modified": "2026-10-09T11:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"consultationId\": 12,\n  \"specialisteId\": 1,\n  \"question\": \"\",\n  \"priorite\": \"URGENTE\"\n}",
+        "form": []
+      },
+      "auth": {
+        "type": "basic",
+        "username": "{{generalisteEmail}}",
+        "password": "{{generalistePassword}}"
+      },
+      "tests": [
+        { "type": "res-code", "custom": "", "action": "equal", "value": "400" }
+      ]
+    },
+    {
+      "_id": "req-us2-400-priorite",
+      "colId": "col-tele-expertise-brief2",
+      "containerId": "folder-us2",
+      "name": "POST priorite invalide -> 400",
+      "url": "{{baseUrl}}/api/demandes",
+      "method": "POST",
+      "sortNum": 32000,
+      "created": "2026-10-09T11:00:00.000Z",
+      "modified": "2026-10-09T11:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"consultationId\": 12,\n  \"specialisteId\": 1,\n  \"question\": \"Avis ?\",\n  \"priorite\": \"IMMEDIATE\"\n}",
+        "form": []
+      },
+      "auth": {
+        "type": "basic",
+        "username": "{{generalisteEmail}}",
+        "password": "{{generalistePassword}}"
+      },
+      "tests": [
+        { "type": "res-code", "custom": "", "action": "equal", "value": "400" }
+      ]
+    },
+    {
+      "_id": "req-us2-404-specialiste",
+      "colId": "col-tele-expertise-brief2",
+      "containerId": "folder-us2",
+      "name": "POST specialiste inexistant -> 404",
+      "url": "{{baseUrl}}/api/demandes",
+      "method": "POST",
+      "sortNum": 33000,
+      "created": "2026-10-09T11:00:00.000Z",
+      "modified": "2026-10-09T11:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"consultationId\": 12,\n  \"specialisteId\": 9999,\n  \"question\": \"Avis ?\",\n  \"priorite\": \"NORMALE\"\n}",
+        "form": []
+      },
+      "auth": {
+        "type": "basic",
+        "username": "{{generalisteEmail}}",
+        "password": "{{generalistePassword}}"
+      },
+      "tests": [
+        { "type": "res-code", "custom": "", "action": "equal", "value": "404" }
+      ]
+    },
+    {
+      "_id": "req-us2-404-consultation",
+      "colId": "col-tele-expertise-brief2",
+      "containerId": "folder-us2",
+      "name": "POST consultation inexistante -> 404",
+      "url": "{{baseUrl}}/api/demandes",
+      "method": "POST",
+      "sortNum": 34000,
+      "created": "2026-10-09T11:00:00.000Z",
+      "modified": "2026-10-09T11:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"consultationId\": 9999,\n  \"specialisteId\": 1,\n  \"question\": \"Avis ?\",\n  \"priorite\": \"NORMALE\"\n}",
+        "form": []
+      },
+      "auth": {
+        "type": "basic",
+        "username": "{{generalisteEmail}}",
+        "password": "{{generalistePassword}}"
+      },
+      "tests": [
+        { "type": "res-code", "custom": "", "action": "equal", "value": "404" }
+      ]
+    },
+    {
+      "_id": "req-us3-specialiste",
+      "colId": "col-tele-expertise-brief2",
+      "containerId": "folder-us3",
+      "name": "GET /api/demandes?statut=EN_ATTENTE (specialiste)",
+      "url": "{{baseUrl}}/api/demandes?statut=EN_ATTENTE",
+      "method": "GET",
+      "sortNum": 40000,
+      "created": "2026-10-09T11:00:00.000Z",
+      "modified": "2026-10-09T11:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "auth": {
+        "type": "basic",
+        "username": "{{cardiologueEmail}}",
+        "password": "{{specialistePassword}}"
+      },
+      "tests": [
+        { "type": "res-code", "custom": "", "action": "equal", "value": "200" }
+      ]
+    },
+    {
+      "_id": "req-us3-generaliste",
+      "colId": "col-tele-expertise-brief2",
+      "containerId": "folder-us3",
+      "name": "GET /api/demandes?consultationId=12 (generaliste)",
+      "url": "{{baseUrl}}/api/demandes?consultationId=12",
+      "method": "GET",
+      "sortNum": 41000,
+      "created": "2026-10-09T11:00:00.000Z",
+      "modified": "2026-10-09T11:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "auth": {
+        "type": "basic",
+        "username": "{{generalisteEmail}}",
+        "password": "{{generalistePassword}}"
+      },
+      "tests": [
+        { "type": "res-code", "custom": "", "action": "equal", "value": "200" }
+      ]
+    },
+    {
+      "_id": "req-us4-ok",
+      "colId": "col-tele-expertise-brief2",
+      "containerId": "folder-us4",
+      "name": "PUT /api/demandes/1/reponse",
+      "url": "{{baseUrl}}/api/demandes/1/reponse",
+      "method": "PUT",
+      "sortNum": 50000,
+      "created": "2026-10-09T11:00:00.000Z",
+      "modified": "2026-10-09T11:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"avis\": \"Trouble du rythme probable, Holter 24h recommande.\",\n  \"recommandations\": \"Adresser en cardiologie, eviter les stimulants.\"\n}",
+        "form": []
+      },
+      "auth": {
+        "type": "basic",
+        "username": "{{cardiologueEmail}}",
+        "password": "{{specialistePassword}}"
+      },
+      "tests": [
+        { "type": "res-code", "custom": "", "action": "equal", "value": "200" }
+      ]
+    },
+    {
+      "_id": "req-us4-404",
+      "colId": "col-tele-expertise-brief2",
+      "containerId": "folder-us4",
+      "name": "PUT demande inexistante -> 404",
+      "url": "{{baseUrl}}/api/demandes/9999/reponse",
+      "method": "PUT",
+      "sortNum": 51000,
+      "created": "2026-10-09T11:00:00.000Z",
+      "modified": "2026-10-09T11:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"avis\": \"Avis\",\n  \"recommandations\": \"Suite\"\n}",
+        "form": []
+      },
+      "auth": {
+        "type": "basic",
+        "username": "{{cardiologueEmail}}",
+        "password": "{{specialistePassword}}"
+      },
+      "tests": [
+        { "type": "res-code", "custom": "", "action": "equal", "value": "404" }
+      ]
+    },
+    {
+      "_id": "req-us4-403",
+      "colId": "col-tele-expertise-brief2",
+      "containerId": "folder-us4",
+      "name": "PUT reponse d'un autre specialiste -> 403",
+      "url": "{{baseUrl}}/api/demandes/1/reponse",
+      "method": "PUT",
+      "sortNum": 52000,
+      "created": "2026-10-09T11:00:00.000Z",
+      "modified": "2026-10-09T11:00:00.000Z",
+      "headers": [],
+      "params": [],
+      "body": {
+        "type": "json",
+        "raw": "{\n  \"avis\": \"Avis\",\n  \"recommandations\": \"Suite\"\n}",
+        "form": []
+      },
+      "auth": {
+        "type": "basic",
+        "username": "{{pneumologueEmail}}",
+        "password": "{{specialistePassword}}"
+      },
+      "tests": [
+        { "type": "res-code", "custom": "", "action": "equal", "value": "403" }
+      ]
+    }
+  ]
+}
