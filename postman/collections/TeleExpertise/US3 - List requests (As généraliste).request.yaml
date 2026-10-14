@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/demandes?consultationId=1"
+method: GET
+queryParams:
+  - key: consultationId
+    value: "1"
+    disabled: false
+    description: ""
+auth:
+  type: basic
+  credentials:
+    username: generaliste@clinique.com
+    password: password123
+order: 6000
