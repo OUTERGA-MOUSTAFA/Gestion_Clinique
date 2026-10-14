@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{baseUrl}}/api/demandes?statut=EN_ATTENTE"
+method: GET
+queryParams:
+  statut: EN_ATTENTE
+auth:
+  type: basic
+  credentials:
+    username: cardiologue@clinique.com
+    password: password123
+order: 5000

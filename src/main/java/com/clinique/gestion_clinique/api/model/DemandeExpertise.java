@@ -2,6 +2,7 @@ package com.clinique.gestion_clinique.api.model;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -19,87 +20,106 @@ public class DemandeExpertise {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
-    @ManyToOne
-    @JoinColumn(name = "consultation_id")
+
+    @Column(name = "consultation_id", nullable = false)
     private Long consultationId;
-    @ManyToOne
-    @JoinColumn(name = "specialiste_id")
-    private Long specialisteId;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "specialiste_id", nullable = false)
+    private Specialiste specialiste;
+
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String question;
+
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Priorite priorite;
+
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private StatutDemande statut;
+
+    @Column(columnDefinition = "TEXT")
     private String avis;
+
+    @Column(columnDefinition = "TEXT")
     private String recommandations;
-    private LocalDateTime date_de_creation;
+
+    @Column(name = "date_creation", nullable = false)
+    private LocalDateTime dateCreation;
 
     public DemandeExpertise() {
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public Long getConsultationId() {
         return consultationId;
     }
 
-    public void setConsultationId(Long consultationId) {
-        this.consultationId = consultationId;
-    }
-
-    public Long getSpecialiteId() {
-        return specialisteId;
-    }
-
-    public void setSpecialisteId(Long specialisteId) {
-        this.specialisteId = specialisteId;
+    public Specialiste getSpecialiste() {
+        return specialiste;
     }
 
     public String getQuestion() {
         return question;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
     public Priorite getPriorite() {
         return priorite;
-    }
-
-    public void setPriorite(Priorite priorite) {
-        this.priorite = priorite;
     }
 
     public StatutDemande getStatut() {
         return statut;
     }
 
-    public void setStatut(StatutDemande statut) {
-        this.statut = statut;
-    }
-
     public String getAvis() {
         return avis;
-    }
-
-    public void setAvis(String avis) {
-        this.avis = avis;
     }
 
     public String getRecommandations() {
         return recommandations;
     }
 
+    public LocalDateTime getDateCreation() {
+        return dateCreation;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setConsultationId(Long consultationId) {
+        this.consultationId = consultationId;
+    }
+
+    public void setSpecialiste(Specialiste specialiste) {
+        this.specialiste = specialiste;
+    }
+
+    public void setQuestion(String question) {
+        this.question = question;
+    }
+
+    public void setPriorite(Priorite priorite) {
+        this.priorite = priorite;
+    }
+
+    public void setStatut(StatutDemande statut) {
+        this.statut = statut;
+    }
+
+    public void setAvis(String avis) {
+        this.avis = avis;
+    }
+
     public void setRecommandations(String recommandations) {
         this.recommandations = recommandations;
     }
 
-    public LocalDateTime getDate_de_creation() {
-        return date_de_creation;
+    public void setDateCreation(LocalDateTime dateCreation) {
+        this.dateCreation = dateCreation;
     }
-
-    public void setDate_de_creation(LocalDateTime date_de_creation) {
-        this.date_de_creation = date_de_creation;
-    }
-
 }

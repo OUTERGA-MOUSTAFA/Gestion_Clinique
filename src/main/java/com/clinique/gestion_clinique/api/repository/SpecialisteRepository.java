@@ -1,6 +1,8 @@
 package com.clinique.gestion_clinique.api.repository;
 
-import com.clinique.gestion_clinique.api.model.Specialite;
+import java.util.List;
+
+import com.clinique.gestion_clinique.api.model.Specialiste;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -13,24 +15,37 @@ public class SpecialisteRepository {
         this.entityManager = entityManager;
     }
 
-    public Specialite findById(Long id) {
-
-        return entityManager.find(Specialite.class, id);
+    public List<Specialiste> findAll() {
+        return entityManager
+                .createQuery(
+                        "SELECT s FROM Specialiste s JOIN FETCH s.utilisateur",
+                        Specialiste.class)
+                .getResultList();
     }
 
-    public Specialite findUtilisateurById(Long utilisateurId) {
-
+    public Specialiste findById(Long id) {
         try {
+            return entityManager
+                    .createQuery(
+                            "SELECT s FROM Specialiste s JOIN FETCH s.utilisateur WHERE s.id = :id",
+                            Specialiste.class)
+                    .setParameter("id", id)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 
-            return entityManager.createQuery(
-                    "SELECT s FROM Specialiste s " +
-                            "WHERE s.utilisateurId = :utilisateurId",
-                    Specialite.class)
+    public Specialiste findByUtilisateurId(Long utilisateurId) {
+        try {
+            return entityManager
+                    .createQuery(
+                            "SELECT s FROM Specialiste s JOIN FETCH s.utilisateur"
+                                    + " WHERE s.utilisateur.id = :utilisateurId",
+                            Specialiste.class)
                     .setParameter("utilisateurId", utilisateurId)
                     .getSingleResult();
-
         } catch (NoResultException e) {
-
             return null;
         }
     }
